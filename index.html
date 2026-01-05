@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ominous Countdown</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Der Hintergrund-Balken */
+        #progress-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%; 
+            background-color: #2c3e50;
+            z-index: 1;
+            transition: width 0.1s linear;
+        }
+
+        /* Container für den Text */
+        .content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        }
+
+        /* Große Zeitanzeige */
+        #timer {
+            font-size: 5rem;
+            font-weight: bold;
+            font-variant-numeric: tabular-nums;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Kleine, kursive Prozentanzeige */
+        #percentage {
+            font-size: 1.5rem;
+            font-style: italic;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+
+        /* Der goldene Leuchteffekt */
+        .golden-glow {
+            color: #ffd700 !important;
+            text-shadow: 0 0 10px #ffd700, 0 0 20px #ffa500, 0 0 30px #ff8c00;
+            opacity: 1 !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="progress-background"></div>
+
+    <div class="content">
+        <div id="timer">00:00:00:00.000</div>
+        <div id="percentage">0.00000%</div>
+    </div>
+
+    <script>
+        // Start- und Enddatum
+        const startDate = new Date("2026-01-05T18:40:00").getTime();
+        const endDate = new Date("2026-04-06T09:00:00").getTime();
+
+        function updateDisplay() {
+            const now = new Date().getTime();
+
+            // Berechnung für den Countdown
+            let remainingTime = endDate - now;
+            
+            if (remainingTime < 0) {
+                remainingTime = 0;
+            }
+
+            // Zeit-Komponenten
+            const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+            const milliseconds = Math.floor(remainingTime % 1000);
+
+            const displayTime = 
+                String(days).padStart(2, '0') + ":" +
+                String(hours).padStart(2, '0') + ":" +
+                String(minutes).padStart(2, '0') + ":" +
+                String(seconds).padStart(2, '0') + "." +
+                String(milliseconds).padStart(3, '0');
+
+            document.getElementById('timer').textContent = displayTime;
+
+            // Fortschrittsbalken und Prozentberechnung
+            const totalDuration = endDate - startDate;
+            const elapsed = now - startDate;
+            
+            let progressPercent = (elapsed / totalDuration) * 100;
+
+            if (progressPercent < 0) progressPercent = 0;
+            if (progressPercent > 100) progressPercent = 100;
+
+            // Hintergrundbalken Breite
+            document.getElementById('progress-background').style.width = progressPercent + "%";
+
+            // Prozentanzeige Element
+            const percentageElement = document.getElementById('percentage');
+            percentageElement.textContent = progressPercent.toFixed(5) + "%";
+
+            // Logik: Leuchten bei 67.x und 69.x, aber NICHT bei 68.x
+            const is67 = (progressPercent >= 67 && progressPercent < 68);
+            const is69 = (progressPercent >= 69 && progressPercent < 70);
+
+            if (is67 || is69) {
+                percentageElement.classList.add('golden-glow');
+            } else {
+                percentageElement.classList.remove('golden-glow');
+            }
+        }
+
+        // Intervall für flüssige Anzeige
+        setInterval(updateDisplay, 10);
+        updateDisplay();
+    </script>
+</body>
+</html>
