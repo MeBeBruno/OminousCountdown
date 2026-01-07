@@ -35,25 +35,61 @@
             transition: width 0.1s linear;
         }
 
+        justify-content: center;
+            align-items: center;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Der Hintergrund-Balken */
+        #progress-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%; 
+            background-color: #2c3e50;
+            z-index: 1;
+            transition: width 0.1s linear;
+        }
+
         /* Container für den Text */
         .content {
             position: relative;
             z-index: 2;
             text-align: center;
             text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+            /* Padding verhindert, dass Text auf Handys direkt am Rand klebt */
+            padding: 0 1rem; 
+            width: 100%;
         }
 
         /* Große Zeitanzeige */
         #timer {
+            /* Fallback für ältere Browser */
             font-size: 5rem;
+            
+            /* Responsive Schriftgröße: 
+               Mindestens 1.5rem, 
+               bevorzugt 12% der Bildschirmbreite, 
+               maximal 5rem */
+            font-size: clamp(1.8rem, 12vw, 5rem);
+            
             font-weight: bold;
             font-variant-numeric: tabular-nums;
             margin-bottom: 0.5rem;
+            
+            /* Verhindert ungewollten Zeilenumbruch bei kleinen Screens */
+            white-space: nowrap; 
         }
 
         /* Kleine, kursive Prozentanzeige */
         #percentage {
-            font-size: 1.5rem;
+            /* Responsive Schriftgröße für Prozent */
+            font-size: clamp(1rem, 4vw, 1.5rem);
+            
             font-style: italic;
             opacity: 0.8;
             transition: all 0.3s ease;
@@ -64,6 +100,14 @@
             color: #ffd700 !important;
             text-shadow: 0 0 10px #ffd700, 0 0 20px #ffa500, 0 0 30px #ff8c00;
             opacity: 1 !important;
+        }
+
+        /* Zusätzliche Anpassung für sehr kleine Geräte (optional, zur Sicherheit) */
+        @media (max-width: 400px) {
+            #timer {
+                /* Auf sehr schmalen Handys (z.B. iPhone SE) noch etwas kleiner */
+                font-size: 10vw; 
+            }
         }
     </style>
 </head>
