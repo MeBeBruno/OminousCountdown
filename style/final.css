@@ -32,7 +32,7 @@ h2 {
 
 #countdownContainer {
     z-index: 1;
-    width: 590px;
+    width: 394px;
     overflow: hidden;
     filter: invert(1);
     mix-blend-mode: difference;
