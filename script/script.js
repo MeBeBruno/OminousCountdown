@@ -3,8 +3,8 @@ const countdown = document.getElementById('countdown');
 const percentage = document.getElementById('percentage');
 const background = document.getElementById('background');
 
-const startDatetime = new Date('2026-04-11T18:34:00').getTime();
-const targetDatetime = new Date('2026-10-25T10:00:00').getTime();
+const startDatetime = new Date('2026-10-30T13:15:00').getTime();
+const targetDatetime = new Date('2027-03-22T10:00:00').getTime();
 
 setInterval(function() {
     let currentDatetime = new Date().getTime();
